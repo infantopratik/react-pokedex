@@ -186,7 +186,7 @@ class Home extends Component {
 		return (
 			<Layout>
 	      <Header className="header">
-	      	<h3 className="logoText">Order Manager</h3>
+	      	<h3 className="logoText">Pokedex</h3>
 	      	<div>
 	      		<Button type="primary" className="help-btn" onClick={this.helpModal} ghost>Help</Button>
 	      		<Button type="primary" onClick={this.logout} ghost>Log Out</Button>
