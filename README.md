@@ -1,5 +1,5 @@
-# Order Manager
-Order Management Application
+# React Pokedex
+One stop for all pokemon information
 
 # Setup
 1. Install NodeJS, MongoDB, Git SCM
@@ -10,12 +10,3 @@ Order Management Application
 6. Start the Server => yarn prod:start
 7. The app uses MongoDB, which is deployed by Mongo Atlas, so will connect by itself.
 8. App will be running on http://localhost:8000 OR http://127.0.0.1:8000
-
-# API Endpoints
-## Orders
-1. **_GET_** -> /api/orders - Lists all orders
-2. **_POST_** -> /api/order - add an order
-
-## Users
-1. **_POST_** -> /api/user - register a new user
-2. **_GET_** -> /api/user/details - get user details
