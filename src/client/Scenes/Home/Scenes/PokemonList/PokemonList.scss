@@ -1,0 +1,64 @@
+.pokemonListContainer {
+	display: flex;
+	flex-direction: column;
+
+	.filterBar {
+		margin: 20px 0;
+		padding: 10px;
+		height: 60px;
+		background-color: white !important;
+		width: 100%;
+		border-radius: 3px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+	}
+
+	.pokemonList {
+		min-height: 450px;
+		width: 100%;
+		padding: 10px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-around;
+
+		.pokemonCard {
+			background-color: white;
+			height: 120px;
+			width: 35%;
+			border-radius: 5px;
+			margin: 20px;
+		}
+
+		.pokemonImage{
+			width: 80px;
+			height: 80px;
+			border-radius: 100px;
+			background-color: #585858 !important;
+	    position: relative;
+		  left: -40px;
+		  top: 20px;
+		}
+
+		.pokemonDetails {
+			width: 90%;
+			height: 100%;
+			position: relative;
+			top: -80px;
+    	left: 40px;
+    	display: flex;
+    	flex-direction: column;
+    	justify-content: space-around;
+		}
+
+		.shadow {
+		  -webkit-box-shadow: 6px 6px 14px -7px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+		  -moz-box-shadow:    6px 6px 14px -7px #ccc;  /* Firefox 3.5 - 3.6 */
+		  box-shadow:         6px 6px 14px -7px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+		}
+	}
+
+}
+
