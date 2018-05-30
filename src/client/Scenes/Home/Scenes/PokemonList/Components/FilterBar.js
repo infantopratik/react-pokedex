@@ -2,25 +2,35 @@ import React, { Component } from 'react';
 import { Input, Select } from 'antd';
 const Option = Select.Option;
 const Search = Input.Search;
+import axios from 'axios';
 
 class FilterBar extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			loading: false
+			loading: false,
+			pokemonTypes: []
 		}
 	}
 
-	handleChange(value) {
-	  console.log(`selected ${value}`);
+	componentDidMount() {
+		axios.get('https://pokeapi.co/api/v2/type/')
+		.then(res => {
+			console.log('res', res);
+			this.setState({
+				pokemonTypes: res.data.results
+			});
+		})
+		.catch(err => {
+			console.log('err', err);
+		})
 	}
 
 	render() {
-		const children = []
-		for (let i = 10; i < 36; i++) {
-		  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-		}
+		const children = this.state.pokemonTypes.map((pokemonType, i) =>
+			<Option value={pokemonType.name} key={i}>{pokemonType.name}</Option>
+		);
 
 		return (
     		<div className="filterBar">
@@ -29,14 +39,10 @@ class FilterBar extends Component {
 			      onSearch={value => console.log(value)}
 			      style={{ width: '48%' }}
 			    />
-		    	<Select
-				    mode="tags"
-				    style={{ width: '48%' }}
-				    placeholder="Filter By Pokemon Types"
-				    onChange={e => this.handleChange(e)}
-				  >
-				    {children}
-				  </Select>
+				  <Select defaultValue="none" style={{ width: '48%' }} onChange={e => this.props.updateFilter(e)}>
+			      <Option value="none">Filter By Pokemon Type</Option>
+			      {children}
+			    </Select>
     		</div>
 		)
 	}

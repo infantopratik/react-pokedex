@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Tooltip } from 'antd';
+import { Input, Tooltip, Tag } from 'antd';
 import axios from 'axios';
 
 import PokemonStats from './PokemonStats';
@@ -10,7 +10,7 @@ class PokemonCard extends Component {
 		super(props);
 		this.state = {
 			loading: true,
-			pokemonImage: '',
+			pokemonImage: null,
 			pokemonStats: [],
 			pokemonTypes: []
 		}
@@ -33,15 +33,20 @@ class PokemonCard extends Component {
 
 	render() {
 
+		const PokemonTypesTags = (this.state.pokemonTypes.length)?
+		this.state.pokemonTypes.map((pokemonType, i) => <Tag color="#cda210" key={i}>{pokemonType.type.name}</Tag> )
+		:
+		<Tag color="#cda210">Loading...</Tag>;
+
 		return (
 			<div className="pokemonCard shadow">
 				<div className="pokemonImage">
 					<img className="pokemonSprite" src={this.state.pokemonImage} />
 				</div>
 				<div className="pokemonDetails">
-					<h2 style={{'margin-left': '20px'}}>{this.props.name.toUpperCase()}</h2>
-					<PokemonStats stats={this.state.pokemonStats}/>
-					{/*<div>{this.state.pokemonTypes}</div>*/}
+					<h2 className="pokemonName">{this.props.name.toUpperCase()}</h2>
+					<div className="pokemonTypesDiv">{PokemonTypesTags}</div>
+					{(this.state.pokemonStats.length)?<PokemonStats stats={this.state.pokemonStats}/>:<PokemonStats />}
 				</div>
 			</div>
 		)
