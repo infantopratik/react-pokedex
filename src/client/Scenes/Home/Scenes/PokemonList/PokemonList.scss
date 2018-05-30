@@ -36,10 +36,17 @@
 			width: 80px;
 			height: 80px;
 			border-radius: 100px;
-			background-color: #585858 !important;
+			background-color: white !important;
 	    position: relative;
 		  left: -40px;
 		  top: 20px;
+		  box-shadow: 14px 10px 29px -10px #ccc;
+		}
+
+		.pokemonSprite{
+			position: relative;
+	    left: -5px;
+	    top: -5px;
 		}
 
 		.pokemonDetails {
@@ -50,13 +57,41 @@
     	left: 40px;
     	display: flex;
     	flex-direction: column;
-    	justify-content: space-around;
+    	justify-content: space-evenly;
 		}
 
 		.shadow {
 		  -webkit-box-shadow: 6px 6px 14px -7px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
 		  -moz-box-shadow:    6px 6px 14px -7px #ccc;  /* Firefox 3.5 - 3.6 */
 		  box-shadow:         6px 6px 14px -7px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+		}
+
+		.statDiv{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items: center;
+		}
+
+		.statBox{
+			background-color: #fee748;
+	    width: 30px;
+	    border-radius: 5px;
+		}
+
+		.statName{
+			display: flex;
+	    flex-direction: row;
+	    justify-content: center;
+	    font-weight: bold;
+		}
+
+		.statValue {
+	    background-color: white;
+	    margin: 2px;
+	    display: flex;
+	    justify-content: center;
+      font-size: 12px;
 		}
 	}
 

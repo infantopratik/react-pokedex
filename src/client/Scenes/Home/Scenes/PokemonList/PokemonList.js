@@ -3,15 +3,31 @@ import { Input, Select } from 'antd';
 const Option = Select.Option;
 const Search = Input.Search;
 import axios from 'axios';
+
 import './PokemonList.scss';
+import FilterBar from './Components/FilterBar';
+import PokemonCard from './Components/PokemonCard';
 
 class PokemonList extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			loading: false
+			loading: false,
+			pokemonList: []
 		}
+	}
+
+	componentDidMount() {
+		axios.get('https://pokeapi.co/api/v2/pokemon/')
+		.then(res => {
+			console.log('res', res);
+			this.setState({pokemonList : res.data.results});
+			console.log('pokemonList', this.state.pokemonList);
+		})
+		.catch(err => {
+			console.log('err', err)
+		})
 	}
 
 	handleChange(value) {
@@ -19,37 +35,14 @@ class PokemonList extends Component {
 	}
 
 	render() {
-		const children = []
-		for (let i = 10; i < 36; i++) {
-		  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-		}
-
+		const PokemonCardList = this.state.pokemonList.map((pokemon,i)=>
+			<PokemonCard key={i} name={pokemon.name} url={pokemon.url}/>
+		);
 		return (
     	<div className="pokemonListContainer">
-    		<div className="filterBar">
-    			<Search
-			      placeholder="Search for Pokemon"
-			      onSearch={value => console.log(value)}
-			      style={{ width: '48%' }}
-			    />
-		    	<Select
-				    mode="tags"
-				    style={{ width: '48%' }}
-				    placeholder="Filter By Pokemon Types"
-				    onChange={e => this.handleChange(e)}
-				  >
-				    {children}
-				  </Select>
-    		</div>
+    		<FilterBar />
     		<div className="pokemonList">
-    			<div className="pokemonCard shadow">
-    				<div className="pokemonImage"></div>
-    				<div className="pokemonDetails">
-    					<div>Pikachu</div>
-    					<div>#36</div>
-    					<div>45 20 75</div>
-    				</div>
-    			</div>
+    			{PokemonCardList}
     		</div>
     	</div>
 		)
