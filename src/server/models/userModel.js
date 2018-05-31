@@ -7,12 +7,10 @@ import AccessToken from './accessTokenModel';
 const Schema = mongoose.Schema;
 
 const userScema = new Schema({
-	name: {type: String},
 	email: {type: String, required: true, unique: true},
-	phone: {type: String, required: true},
 	password: {type: String, required: true},
 	createdAt: {type: Date, required: true, default: Date.now},
-	updatedAt: {type: Date, required: true, default: Date.now},
+	updatedAt: {type: Date, required: true, default: Date.now}
 });
 
 userScema.static('verifyPassword', function(data, cb) {

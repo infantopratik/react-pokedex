@@ -6,8 +6,8 @@ import Profile from './Scenes/Profile/Profile';
 
 const HomeRoutes = () => (
 	<Switch>
-		<Route exact path="/" component={PokemonList} />
 		<Route path="/profile" component={Profile} />
+		<Route path="/" component={PokemonList} />
 	</Switch>
 );
 

@@ -39,7 +39,7 @@ export function checkToken(req, res) {
 export function createUser(req, res) {
 	let userData = req.body;
 
-	if (!userData || !userData.email || !userData.name || !userData.phone || !userData.password) {
+	if (!userData || !userData.email || !userData.password) {
 		return res.status(400).send("Provie All User Details");
 	}
 

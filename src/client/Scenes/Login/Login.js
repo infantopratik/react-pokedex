@@ -50,7 +50,7 @@ class Login extends Component {
 
 	render() {
 		return (
-			<Card title="Login" bordered={false} style={{ width: 300 }} className="login-div">
+			<Card title="Pokedex" bordered={false} style={{ width: 300 }} className="login-div">
 				<Form onSubmit={this.login} className="login-form">
 	        <FormItem>
 	            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} ref={(input) => this.email=input} placeholder="Email" />

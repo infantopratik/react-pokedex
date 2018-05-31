@@ -18,9 +18,7 @@ class Register extends Component {
     this.setState({loading: true});
     axios.post('/api/user', {
 	    email: this.email.input.value,
-	    password: this.password.input.value,
-	    phone: this.phone.input.value,
-	    name: this.email.input.value
+	    password: this.password.input.value
 	  })
 	  .then(res => {
 	  	// console.log('res', res);
@@ -45,16 +43,10 @@ class Register extends Component {
 
 	render() {
 		return (
-			<Card title="Register" bordered={false} style={{ width: 400 }} className="register-div">
+			<Card title="Create an account to access Pokedex" bordered={false} style={{ width: 400 }} className="register-div">
 				<Form onSubmit={this.register}>
-	        <FormItem label="Name">
-	          <Input ref={(input) => this.name=input} type="text"/>
-	        </FormItem>
 	        <FormItem label="E-mail">
 	          <Input ref={(input) => this.email=input} type="text"/>
-	        </FormItem>
-	        <FormItem label="Phone Number">
-	          <Input ref={(input) => this.phone=input} type="number"/>
 	        </FormItem>
 	        <FormItem label="Password">
 	          <Input ref={(input) => this.password=input} type="password" />

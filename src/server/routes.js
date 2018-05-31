@@ -1,7 +1,7 @@
 'use strict'
 import { Router } from 'express';
 import * as UserController from './controllers/User.controller';
-// import * as OrderController from './controllers/Order.controller';
+import * as FavoriteController from './controllers/Favorite.controller';
 
 import authenticate from './middlewares/authenticate';
 
@@ -15,8 +15,9 @@ router.get('/checkToken', UserController.checkToken);
 router.get('/user/details', authenticate, UserController.getDetails);
 router.post('/logout', UserController.logout);
 
-//Order Routes
-// router.post('/order', authenticate, OrderController.addOrder);
-// router.get('/orders', authenticate, OrderController.getAllOrders);
+// Favorites Routes
+router.post('/favorite', authenticate, FavoriteController.addFavorite);
+router.delete('/favorite', authenticate, FavoriteController.removeFavorite);
+router.get('/favorites', authenticate, FavoriteController.getAllFavorites);
 
 export default router;

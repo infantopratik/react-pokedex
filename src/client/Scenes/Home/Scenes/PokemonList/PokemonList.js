@@ -44,9 +44,9 @@ class PokemonList extends Component {
 	updateFilter(val) {
 		console.log('type filter val', val);
 		if(val !== 'none') {
+			this.setState({pokemonList: [], disablePagination: true})
 			axios.get(`https://pokeapi.co/api/v2/type/${val}/`)
 			.then(res => {
-				this.setState({pokemonList: [], disablePagination: true})
 				console.log('res', res);
 				let list = [];
 				_.each(res.data.pokemon, val=>{
@@ -68,9 +68,14 @@ class PokemonList extends Component {
 	}
 
 	render() {
-		const PokemonCardList = this.state.pokemonList.map((pokemon,i)=>
-			<PokemonCard key={i} name={pokemon.name} url={pokemon.url}/>
-		);
+
+		const PokemonCardList = (this.state.pokemonList.length)?
+		this.state.pokemonList.map((pokemon,i)=>
+			<PokemonCard key={i} name={pokemon.name} url={pokemon.url} isFavoriteCard={false}/>
+		)
+		:
+		<div>Fetching the pokemons...</div>
+
 		return (
     	<div className="pokemonListContainer">
     		<FilterBar

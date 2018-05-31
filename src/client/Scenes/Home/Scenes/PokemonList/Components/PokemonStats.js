@@ -5,7 +5,6 @@ class PokemonStats extends Component {
 
 	constructor(props) {
 		super(props);
-		console.log('props stats', this.props.stats);
 	}
 
 	render() {

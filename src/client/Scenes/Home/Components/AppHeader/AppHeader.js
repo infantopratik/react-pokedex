@@ -31,6 +31,10 @@ class AppHeader extends Component {
 	  })
 	}
 
+	goToHome() {
+		window.location = "#/login";
+	}
+
 	render() {
 
 		const menu = (
@@ -46,7 +50,7 @@ class AppHeader extends Component {
 
 		return (
 	      <Header className="header" style={{ position: 'fixed', width: '100%' }}>
-	      	<h3 className="logoText">Pokedex</h3>
+	      	<h3 className="logoText clickable" onClick={this.goToHome}>Pokedex</h3>
 	      	<div>
 	      		<Dropdown overlay={menu} placement="bottomRight">
 	      			<Avatar className="ant-dropdown-link clickable" size="large" style={{ backgroundColor: '#2B2B2B' }} icon='user' />

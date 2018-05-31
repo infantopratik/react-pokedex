@@ -33,13 +33,13 @@ class FilterBar extends Component {
 		);
 
 		return (
-    		<div className="filterBar">
-    			<Search
+    		<div>
+    			{/*<Search
 			      placeholder="Search for Pokemon"
 			      onSearch={value => console.log(value)}
 			      style={{ width: '48%' }}
-			    />
-				  <Select defaultValue="none" style={{ width: '48%' }} onChange={e => this.props.updateFilter(e)}>
+			    />*/}
+				  <Select defaultValue="none" style={{ width: '20%', float: 'right' }} onChange={e => this.props.updateFilter(e)}>
 			      <Option value="none">Filter By Pokemon Type</Option>
 			      {children}
 			    </Select>

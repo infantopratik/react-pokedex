@@ -15,6 +15,11 @@
 		align-items: center;
 	}
 
+	.ant-select-selection{
+		background-color: #fee748;
+    border-color: black;
+	}
+
 	.pokemonList {
 		min-height: 450px;
 		width: 100%;
@@ -23,6 +28,7 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-around;
+		align-items: center;
 
 		.pokemonCard {
 			background-color: white;
@@ -35,6 +41,19 @@
 		.pokemonName{
 			margin-left: 15px;
 			margin-bottom: 0px !important;
+		}
+
+		.favoriteIcon{
+			font-size: 22px;
+			color: red;
+			margin: 0px 20px;
+			cursor: pointer;
+		}
+
+		.pokemonHead{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
 		}
 
 		.pokemonImage{
