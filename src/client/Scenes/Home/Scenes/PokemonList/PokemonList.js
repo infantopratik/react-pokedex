@@ -16,6 +16,7 @@ class PokemonList extends Component {
 		this.state = {
 			loading: false,
 			pokemonList: [],
+			pokemonHistory: [],
 			totalPokemon: 0,
 			pageSize: 10,
 			page: 1,
@@ -27,18 +28,50 @@ class PokemonList extends Component {
 		this.fetchPokemons(this.state.page, this.state.pageSize);
 	}
 
+	cachePokemons(page, pageSize) {
+			/*pokemonHistory: this.state.pokemonHistory.concat([{
+				[`${this.state.page}_${this.state.pageSize}`]: this.state.pokemonList
+			}])*/
+		this.setState({
+			pokemonHistory: Object.assign({[`${this.state.page}_${this.state.pageSize}`]: this.state.pokemonList}, this.state.pokemonHistory)
+		});
+		this.fetchPokemons(page, pageSize);
+	}
+
 	fetchPokemons(page, pageSize) {
-		this.setState({pokemonList: []});
+		console.log('pokeHistory', this.state.pokemonHistory);
+		console.log('this.state.page', this.state.page);
 		console.log('page', page);
+		console.log('this.state.pageSize', this.state.pageSize);
 		console.log('pageSize', pageSize);
-		axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${pageSize}&offset=${(page-1)*pageSize}`)
-		.then(res => {
-			console.log('res', res);
-			this.setState({pokemonList : res.data.results, totalPokemon: res.data.count});
-		})
-		.catch(err => {
-			console.log('err', err)
-		})
+		// console.log('page', page);
+		// console.log('pageSize', pageSize);
+		this.setState({
+			pokemonList: []
+		});
+		if(this.state.pokemonHistory[`${page}_${pageSize}`]) {
+			this.setState({
+				pokemonList : this.state.pokemonHistory[`${page}_${pageSize}`],
+				page,
+				pageSize
+			});
+		} else {
+			axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${pageSize}&offset=${(page-1)*pageSize}`)
+			.then(res => {
+				console.log('res', res);
+				this.setState(
+					{
+						pokemonList : res.data.results,
+						totalPokemon: res.data.count,
+						page,
+						pageSize
+					}
+				);
+			})
+			.catch(err => {
+				console.log('err', err)
+			})
+		}
 	}
 
 	updateFilter(val) {
@@ -91,7 +124,7 @@ class PokemonList extends Component {
 	    		<Pagination
 	    			className="paginationContainer"
 	    			total={this.state.totalPokemon}
-	    			onChange={(page, pageSize) => this.fetchPokemons(page, pageSize)}
+	    			onChange={(page, pageSize) => this.cachePokemons(page, pageSize)}
 	    			onShowSizeChange={(page, pageSize) => this.fetchPokemons(page, pageSize)}
 	    			showSizeChanger
 	    			pageSizeOptions={['10','20','30','40','50']}

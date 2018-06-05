@@ -17,7 +17,17 @@ class PokemonCard extends Component {
 	}
 
 	componentDidMount() {
-		axios.get(this.props.url)
+		// console.log('this.props.url', this.props.url);
+		this.fetchPokemonDetails(this.props.url);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		// console.log('nextProps', nextProps);
+		this.fetchPokemonDetails(nextProps.url);
+	}
+
+	fetchPokemonDetails(url) {
+		axios.get(url)
 		.then(res => {
 			console.log('res', res);
 			this.setState({
