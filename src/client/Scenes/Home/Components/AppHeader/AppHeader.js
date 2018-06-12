@@ -8,14 +8,10 @@ class AppHeader extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			loading: false
-		}
 	}
 
 	logout = e => {
 		e.preventDefault();
-    this.setState({loading: true});
     axios.post('/api/logout')
 	  .then(res => {
 	  	// console.log('res', res);
@@ -27,12 +23,11 @@ class AppHeader extends Component {
 	  	// console.log('err', err);
 	  	alert('Error occurred while logging out!');
 	  	window.location = "#/login";
-  		this.setState({loading: false});
 	  })
 	}
 
 	goToHome() {
-		window.location = "#/login";
+		window.location = "#/";
 	}
 
 	render() {

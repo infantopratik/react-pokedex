@@ -4,69 +4,44 @@ const Option = Select.Option;
 const Search = Input.Search;
 import axios from 'axios';
 import _ from 'lodash';
+import { observer } from 'mobx-react'
 
 import './PokemonList.scss';
 import FilterBar from './Components/FilterBar';
 import PokemonCard from './Components/PokemonCard';
+import PokemonCardStore from '../../../../Data/PokemonCardStore';
+import PokedexStore from '../../../../Data/PokedexStore';
 
-class PokemonList extends Component {
+const PokemonList = observer(class PokemonList extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			loading: false,
-			pokemonList: [],
-			pokemonHistory: [],
-			totalPokemon: 0,
-			pageSize: 10,
-			page: 1,
-			disablePagination: false
-		}
 	}
 
 	componentDidMount() {
-		this.fetchPokemons(this.state.page, this.state.pageSize);
+		const {page, pageSize} = this.props.store
+		this.fetchPokemons(page, pageSize)
 	}
 
 	cachePokemons(page, pageSize) {
-			/*pokemonHistory: this.state.pokemonHistory.concat([{
-				[`${this.state.page}_${this.state.pageSize}`]: this.state.pokemonList
-			}])*/
-		this.setState({
-			pokemonHistory: Object.assign({[`${this.state.page}_${this.state.pageSize}`]: this.state.pokemonList}, this.state.pokemonHistory)
-		});
+		this.props.store.pokemonHistory = Object.assign({[`${this.props.store.page}_${this.props.store.pageSize}`]: this.props.store.pokemonList}, this.props.store.pokemonHistory);
 		this.fetchPokemons(page, pageSize);
 	}
 
 	fetchPokemons(page, pageSize) {
-		console.log('pokeHistory', this.state.pokemonHistory);
-		console.log('this.state.page', this.state.page);
-		console.log('page', page);
-		console.log('this.state.pageSize', this.state.pageSize);
-		console.log('pageSize', pageSize);
-		// console.log('page', page);
-		// console.log('pageSize', pageSize);
-		this.setState({
-			pokemonList: []
-		});
-		if(this.state.pokemonHistory[`${page}_${pageSize}`]) {
-			this.setState({
-				pokemonList : this.state.pokemonHistory[`${page}_${pageSize}`],
-				page,
-				pageSize
-			});
+		this.props.store.pokemonList = [];
+		if(this.props.store.pokemonHistory[`${page}_${pageSize}`]) {
+			this.props.store.pokemonList = this.props.store.pokemonHistory[`${page}_${pageSize}`];
+			this.props.store.page = page;
+			this.props.store.pageSize = pageSize;
 		} else {
 			axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${pageSize}&offset=${(page-1)*pageSize}`)
 			.then(res => {
-				console.log('res', res);
-				this.setState(
-					{
-						pokemonList : res.data.results,
-						totalPokemon: res.data.count,
-						page,
-						pageSize
-					}
-				);
+				// console.log('res', res);
+				this.props.store.pokemonList = res.data.results;
+				this.props.store.totalPokemon = res.data.count;
+				this.props.store.page = page;
+				this.props.store.pageSize = pageSize;
 			})
 			.catch(err => {
 				console.log('err', err)
@@ -75,36 +50,32 @@ class PokemonList extends Component {
 	}
 
 	updateFilter(val) {
-		console.log('type filter val', val);
 		if(val !== 'none') {
-			this.setState({pokemonList: [], disablePagination: true})
+			this.props.store.pokemonList = [];
+			this.props.store.disablePagination = true;
 			axios.get(`https://pokeapi.co/api/v2/type/${val}/`)
 			.then(res => {
-				console.log('res', res);
+				// console.log('res', res);
 				let list = [];
 				_.each(res.data.pokemon, val=>{
 					list.push(val.pokemon);
 				});
-				this.setState({
-					pokemonList: list
-				});
+				this.props.store.pokemonList = list;
 			})
 			.catch(err => {
 				console.log('err', err);
 			})
 		} else {
-			this.setState({
-				disablePagination: false
-			});
+			this.props.store.disablePagination = false;
 			this.fetchPokemons(1, 10);
 		}
 	}
 
 	render() {
-
-		const PokemonCardList = (this.state.pokemonList.length)?
-		this.state.pokemonList.map((pokemon,i)=>
-			<PokemonCard key={i} name={pokemon.name} url={pokemon.url} isFavoriteCard={false}/>
+		const { pokemonList, pokemonHistory, totalPokemon, disablePagination } = this.props.store;
+		const PokemonCardList = (pokemonList.length)?
+		pokemonList.map((pokemon,i)=>
+			<PokemonCard key={i} name={pokemon.name} url={pokemon.url} isFavoriteCard={false} store={new PokemonCardStore}/>
 		)
 		:
 		<div>Fetching the pokemons...</div>
@@ -112,18 +83,18 @@ class PokemonList extends Component {
 		return (
     	<div className="pokemonListContainer">
     		<FilterBar
-    			typeFilter={'none'}
     			updateFilter={e => this.updateFilter(e)}
+    			store={PokedexStore}
     		/>
     		<div className="pokemonList">
     			{PokemonCardList}
     		</div>
-    		{(this.state.disablePagination)?
+    		{(disablePagination)?
 	    		null
     			:
 	    		<Pagination
 	    			className="paginationContainer"
-	    			total={this.state.totalPokemon}
+	    			total={totalPokemon}
 	    			onChange={(page, pageSize) => this.cachePokemons(page, pageSize)}
 	    			onShowSizeChange={(page, pageSize) => this.fetchPokemons(page, pageSize)}
 	    			showSizeChanger
@@ -133,6 +104,6 @@ class PokemonList extends Component {
     	</div>
 		)
 	}
-}
+})
 
 export default PokemonList;

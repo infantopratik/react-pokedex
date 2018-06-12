@@ -8,19 +8,19 @@ class FilterBar extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			loading: false,
+		/*this.state = {
 			pokemonTypes: []
-		}
+		}*/
 	}
 
 	componentDidMount() {
 		axios.get('https://pokeapi.co/api/v2/type/')
 		.then(res => {
-			console.log('res', res);
-			this.setState({
+			// console.log('res', res);
+			/*this.setState({
 				pokemonTypes: res.data.results
-			});
+			});*/
+			this.props.store.pokemonTypes = res.data.results;
 		})
 		.catch(err => {
 			console.log('err', err);
@@ -28,7 +28,7 @@ class FilterBar extends Component {
 	}
 
 	render() {
-		const children = this.state.pokemonTypes.map((pokemonType, i) =>
+		const children = this.props.store.pokemonTypes.map((pokemonType, i) =>
 			<Option value={pokemonType.name} key={i}>{pokemonType.name}</Option>
 		);
 

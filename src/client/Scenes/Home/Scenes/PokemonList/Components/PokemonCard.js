@@ -1,40 +1,31 @@
 import React, { Component } from 'react';
 import { Input, Tooltip, Tag, Icon, notification } from 'antd';
 import axios from 'axios';
+import {observer} from 'mobx-react';
 
 import PokemonStats from './PokemonStats';
 
-class PokemonCard extends Component {
+const PokemonCard = observer(class PokemonCard extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			addedAsFavorite: false,
-			pokemonImage: null,
-			pokemonStats: [],
-			pokemonTypes: []
-		}
 	}
 
 	componentDidMount() {
-		// console.log('this.props.url', this.props.url);
 		this.fetchPokemonDetails(this.props.url);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// console.log('nextProps', nextProps);
 		this.fetchPokemonDetails(nextProps.url);
 	}
 
 	fetchPokemonDetails(url) {
 		axios.get(url)
 		.then(res => {
-			console.log('res', res);
-			this.setState({
-				pokemonImage: res.data.sprites.front_default,
-				pokemonStats: res.data.stats,
-				pokemonTypes: res.data.types,
-			});
+			// console.log('res', res);
+			this.props.store.pokemonImage = res.data.sprites.front_default;
+			this.props.store.pokemonStats = res.data.stats;
+			this.props.store.pokemonTypes = res.data.types;
 		})
 		.catch(err => {
 			console.log('err', err);
@@ -44,9 +35,9 @@ class PokemonCard extends Component {
 	addToFavorite() {
 		axios.post('/api/favorite', {favoriteName: this.props.name, favoriteUrl: this.props.url})
 		.then(res => {
-			console.log('res', res);
+			// console.log('res', res);
 			if(res && res.status === 200) {
-				this.setState({addedAsFavorite: true});
+				this.props.store.addedAsFavorite = true;
 			 	notification['success']({
 			    message: `${this.props.name} added to your favorites!`
 			  });
@@ -58,16 +49,17 @@ class PokemonCard extends Component {
 	}
 
 	render() {
+		const { pokemonTypes, pokemonImage, pokemonStats, addedAsFavorite} = this.props.store;
 
-		const PokemonTypesTags = (this.state.pokemonTypes.length)?
-		this.state.pokemonTypes.map((pokemonType, i) => <Tag color="#cda210" key={i}>{pokemonType.type.name}</Tag> )
+		const PokemonTypesTags = (pokemonTypes.length)?
+		pokemonTypes.map((pokemonType, i) => <Tag color="#cda210" key={i}>{pokemonType.type.name}</Tag> )
 		:
 		<Tag color="#cda210">Loading...</Tag>;
 
 		return (
 			<div className="pokemonCard shadow">
 				<div className="pokemonImage">
-					<img className="pokemonSprite" src={this.state.pokemonImage} />
+					<img className="pokemonSprite" src={pokemonImage} />
 				</div>
 				<div className="pokemonDetails">
 					<div className="pokemonHead">
@@ -78,7 +70,7 @@ class PokemonCard extends Component {
 								<Icon type="heart" className="favoriteIcon" onClick={e => this.props.removeFromFavorites(this.props.name)}/>
 							</Tooltip>
 							:
-							(this.state.addedAsFavorite)?
+							(addedAsFavorite)?
 							<Tooltip placement="top" title='Added to favorites!'>
 								<Icon type="heart" className="favoriteIcon" onClick={e => this.addToFavorite(e)}/>
 							</Tooltip>
@@ -90,11 +82,11 @@ class PokemonCard extends Component {
 
 					</div>
 					<div className="pokemonTypesDiv">{PokemonTypesTags}</div>
-					{(this.state.pokemonStats.length)?<PokemonStats stats={this.state.pokemonStats}/>:<PokemonStats />}
+					{(pokemonStats.length)?<PokemonStats stats={pokemonStats}/>:<PokemonStats />}
 				</div>
 			</div>
 		)
 	}
-}
+})
 
 export default PokemonCard;

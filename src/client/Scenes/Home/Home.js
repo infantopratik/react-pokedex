@@ -11,15 +11,12 @@ class Home extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			loading: false
-		}
 	}
 
 	componentDidMount() {
 		axios.get('/api/checkToken')
 		.then(res=>{
-			console.log('res', res);
+			// console.log('res', res);
 			if(res && res.status !== 200) {
 				window.location = "#/login";
 			}
